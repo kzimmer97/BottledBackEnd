@@ -3,6 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
+			"path": "bottled",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "Pxx+8cipatmpykEo9DpKFqBIOkk=",
 			"path": "github.com/go-chi/chi",
 			"revision": "1a6bb108ccf279c8dac6f9bad857d773b4f9b421",
