@@ -1,1 +1,1 @@
-web: magic
+web: bottled
