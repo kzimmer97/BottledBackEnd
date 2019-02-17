@@ -10,7 +10,7 @@ const (
 )
 
 type Point struct {
-	id int
+	userID int
 
 	locationless bool
 
@@ -23,22 +23,20 @@ type Point struct {
 
 	oldestIndex int
 	oldestAge   int
+
+	sumDistance     float64
+	averageDistance float64
 }
 
-func (p *Point) EvaluateQ(q Point) {
-	//calculate distance
-	distance := p.calcDistance(q)
+func (p *Point) FindAverageDistance(totalDistances int) {
+	p.averageDistance = p.sumDistance / float64(totalDistances)
+}
 
-	if p.closestDistance > distance {
-		p.closestDistance = distance
-		p.closestID = q.id
-		p.closestEst = int(distance)
-	}
-
+func (p *Point) OldAgeTest(q Point) {
 	//run age check
 	if p.oldestAge > q.oldestAge {
 		p.oldestAge = q.oldestAge
-		p.oldestIndex = q.id
+		p.oldestIndex = q.userID
 	}
 }
 
@@ -54,7 +52,7 @@ function distance(lat1, lon1, lat2, lon2) {
 }
 */
 
-func (p *Point) calcDistance(q Point) float64 {
+func (p *Point) CalcDistance(q Point) float64 {
 	a := 0.5 - math.Cos((q.lat-p.lat)*pi)/2 + math.Cos(p.lat*pi)*math.Cos(q.lat*pi)*(1-math.Cos((q.long-p.long)*pi))/2
 	a = 12742 * math.Asin(math.Sqrt(a))
 
@@ -82,7 +80,7 @@ func (p Point) EvaluateBottleOptions() int {
 	r := rand.Intn(10)
 
 	//roll dice... there's a 90% chance we give you someone based on location
-	//this leaves a 10% chance the oldest chat in the bottle gets viewed
+	//this leaves a 10% chance the oldest chat in the bottle gets selected
 
 	if r == 0 {
 		return p.oldestIndex
